@@ -34,7 +34,7 @@ fun MainScreen(
                 .padding(4.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text("TODO: RASPBERRY")
+            Text("to_do: RASPBERRY")
         }
 
         //List of audio tracks

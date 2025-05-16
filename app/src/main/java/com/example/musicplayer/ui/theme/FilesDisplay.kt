@@ -12,9 +12,9 @@ fun FilesDisplay(){
     val audioFiles = assetManager.list("audio_files")
 
     audioFiles?.forEach{ fileName ->
-        //TODO: filtering only mp3 files
+        //to_do: filtering only mp3 files
         val noExtension = fileName.dropLast(4)
-        //TODO: convert into database instead of xml
+        //to_do: convert into database instead of xml
         Text(text = noExtension)
     }
 }
