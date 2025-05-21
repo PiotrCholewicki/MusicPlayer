@@ -20,52 +20,38 @@ import com.example.musicplayer.R
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier
-        .fillMaxWidth()
-
+        .fillMaxSize() // <- Zajmuje cały ekran
 ) {
     Column(
-        modifier = modifier.padding(8.dp),
-        verticalArrangement = Arrangement.SpaceAround
+        modifier = modifier.padding(8.dp) // główny kontener
     ) {
-        //later to be introduced
+        // GÓRNY pasek - Raspberry (40.dp)
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
+                .height(40.dp)
                 .padding(4.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             Text("to_do: RASPBERRY")
         }
 
-        //List of audio tracks
-        Row() {
-
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-                    .height(100.dp)
-            ) {
-                Text(stringResource(R.string.list_of_audio_tracks))
-                FilesDisplay()
-
-            }
-
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        //Audio player bar (play, resume etc.)
-        Row(
-            modifier = modifier
+        // ŚRODKOWA lista utworów - reszta miejsca
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.Center,
-
-            ) {
-            Text("Audio bar")
+                .weight(1f)
+                .padding(4.dp)
+        ) {
+            Text(stringResource(R.string.list_of_audio_tracks))
+            FilesDisplay(
+                modifier = Modifier.weight(1f) // <- ewentualnie, jeśli chcesz FilesDisplay rozciągnąć
+            )
         }
     }
-
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
