@@ -1,0 +1,22 @@
+package com.example.musicplayer.ui.theme
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+@Composable
+fun AppNavigation(){
+    val navController = rememberNavController()
+    //todo: add Routes file
+    NavHost(navController = navController, startDestination = "MainScreen", builder = {
+        composable("MainScreen"){
+            MainScreen(modifier = Modifier, navController)
+        }
+        composable("CurrentSong/{songName}") { backStackEntry ->
+            val songName = backStackEntry.arguments?.getString("songName") ?: "Unknown"
+            CurrentSong(modifier = Modifier, songName = songName, artist = "artist")
+        }
+    })
+}
