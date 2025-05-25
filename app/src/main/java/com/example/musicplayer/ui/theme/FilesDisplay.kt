@@ -1,16 +1,24 @@
 import android.content.res.AssetFileDescriptor
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.musicplayer.ui.theme.CurrentSong
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun FilesDisplay(modifier: Modifier = Modifier) {
+fun FilesDisplay(modifier: Modifier = Modifier, navController: NavController) {
     val context = LocalContext.current
     val assetManager = context.assets
     val audioFiles = assetManager.list("audio_files")?.filter { it.endsWith(".mp3") }
@@ -23,7 +31,8 @@ fun FilesDisplay(modifier: Modifier = Modifier) {
     var currentPosition by remember { mutableStateOf(0) }
     var totalDuration by remember { mutableStateOf(0) }
 
-    Column(modifier = modifier.fillMaxSize()) {
+
+    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         audioFiles?.forEach { fileName ->
             val fileDisplayName = fileName.removeSuffix(".mp3")
 
@@ -53,11 +62,12 @@ fun FilesDisplay(modifier: Modifier = Modifier) {
                             mediaPlayer = null
                             currentFile = null
                         }
+                        navController.navigate("CurrentSong/$fileDisplayName")
                     } catch (e: Exception) {
                         Log.e("FilesDisplay", "Playback error: ${e.message}", e)
                     }
                 },
-                colors = ButtonDefaults.textButtonColors(contentColor = Color.Blue),
+                colors = ButtonDefaults.textButtonColors(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp)
@@ -120,7 +130,14 @@ fun FilesDisplay(modifier: Modifier = Modifier) {
             }
             Spacer(modifier = Modifier.width(8.dp))
 
-            // Progress Slider
+            //update with each second
+            LaunchedEffect(mediaPlayer, isPlaying) {
+                while (isPlaying && mediaPlayer != null) {
+                    delay(100L)
+                    currentPosition = mediaPlayer?.currentPosition ?: 0
+                }
+            }
+
             Slider(
                 value = if (totalDuration > 0) currentPosition.toFloat() / totalDuration else 0f,
                 onValueChange = { newValue ->
@@ -128,6 +145,8 @@ fun FilesDisplay(modifier: Modifier = Modifier) {
                     val newPosition = (newValue * totalDuration).toInt()
                     mediaPlayer?.seekTo(newPosition)
                     currentPosition = newPosition // Update immediately for responsiveness
+
+
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = SliderDefaults.colors(

@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.musicplayer.R
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier
-        .fillMaxSize() // <- Zajmuje cały ekran
+        .fillMaxSize(), // <- Zajmuje cały ekran
+    navController: NavController
 ) {
     Column(
         modifier = modifier.padding(8.dp) // główny kontener
@@ -45,7 +47,8 @@ fun MainScreen(
         ) {
             Text(stringResource(R.string.list_of_audio_tracks))
             FilesDisplay(
-                modifier = Modifier.weight(1f) // <- ewentualnie, jeśli chcesz FilesDisplay rozciągnąć
+                modifier = Modifier.weight(1f),
+                navController = navController // <- ewentualnie, jeśli chcesz FilesDisplay rozciągnąć,
             )
         }
     }
@@ -53,11 +56,11 @@ fun MainScreen(
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    MusicPlayerTheme {
-        Modifier.fillMaxSize()
-        MainScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MainScreenPreview() {
+//    MusicPlayerTheme {
+//        Modifier.fillMaxSize()
+//        MainScreen(navController = NavController)
+//    }
+//}
