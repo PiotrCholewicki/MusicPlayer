@@ -86,9 +86,6 @@ fun Footer(musicPlayerViewModel: MusicPlayerViewModel) {
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Button(onClick = { musicPlayerViewModel.stopPlayback() }) {
-                Text("Stop")
-            }
         }
 
 
