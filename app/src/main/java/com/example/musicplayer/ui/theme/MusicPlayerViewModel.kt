@@ -89,6 +89,7 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
         mediaPlayer = null
         _isPlaying.value = false
         _currentFile.value = null
+        _currentPosition.value = 0
     }
 
     fun seekTo(position: Int) {

@@ -1,8 +1,4 @@
-import android.content.res.AssetFileDescriptor
-import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,11 +9,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.musicplayer.ui.theme.CurrentSong
 import com.example.musicplayer.ui.theme.Footer
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun FilesDisplay(
@@ -57,7 +50,7 @@ fun FilesDisplay(
 
         if (currentFile != null) {
             Spacer(modifier = Modifier.weight(1f)) // wypycha slider na dół
-            Footer(musicPlayerViewModel)
+            Footer(musicPlayerViewModel, navController)
         }
     }
 }

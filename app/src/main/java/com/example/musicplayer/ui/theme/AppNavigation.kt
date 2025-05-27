@@ -25,7 +25,8 @@ fun AppNavigation() {
                 modifier = Modifier,
                 songName = songName,
                 artist = "artist",
-                musicPlayerViewModel = musicPlayerViewModel
+                musicPlayerViewModel = musicPlayerViewModel,
+                navController = navController
             )
         }
     }
