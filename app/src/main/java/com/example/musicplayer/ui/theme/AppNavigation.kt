@@ -17,7 +17,7 @@ fun AppNavigation() {
 
     NavHost(navController = navController, startDestination = "MainScreen") {
         composable("MainScreen") {
-            FilesDisplay(modifier = Modifier, navController, musicPlayerViewModel)
+            MainScreen(modifier = Modifier, navController, musicPlayerViewModel)
         }
         composable("CurrentSong/{songName}") { backStackEntry ->
             val songName = backStackEntry.arguments?.getString("songName") ?: "Unknown"
