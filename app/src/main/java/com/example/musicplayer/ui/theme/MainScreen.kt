@@ -95,8 +95,6 @@ fun Footer(musicPlayerViewModel: MusicPlayerViewModel, navController: NavControl
 
         }
 
-
-
         Slider(
             value = if (totalDuration > 0) currentPosition.toFloat() / totalDuration else 0f,
             onValueChange = {

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //id("com.google.devtools.ksp") version "1.9.23-1.0.20"
 }
 
 android {
@@ -59,4 +60,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     val nav_version = "2.9.0"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
 }
