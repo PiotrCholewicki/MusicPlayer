@@ -27,7 +27,7 @@ object RetrofitClient {
         // Create a Moshi instance for JSON parsing KotlinJsonAdapterFactory is used to
         // automatically generate the adapter for the data classes
         val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
+            .add(KotlinJsonAdapterFactory()) //required because generateAdapter = true
             .build()
         // Create a Retrofit instance with the BASE_URL and Moshi converter
         // using the builder pattern
