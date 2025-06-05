@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,13 +9,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.musicplayer.ui.theme.Footer
+import com.example.musicplayer.ui.theme.TrackViewModel
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
-
+import androidx.compose.runtime.livedata.observeAsState
 @Composable
 fun FilesDisplay(
     modifier: Modifier = Modifier,
     navController: NavController,
-    musicPlayerViewModel: MusicPlayerViewModel
+    musicPlayerViewModel: MusicPlayerViewModel,
+    trackViewModel: TrackViewModel
 ) {
 
     val context = LocalContext.current
@@ -24,30 +25,58 @@ fun FilesDisplay(
     val audioFiles = assetManager.list("audio_files")?.filter { it.endsWith(".mp3") }
 
     val currentFile by musicPlayerViewModel.currentFile.collectAsState()
+//    val trackViewModel by viewModels {
+//        TrackViewModel((application as MusicPlayerApplication).repository)
+//    }
+//    val repository = MusicPlayerApplication.repository
+//    val factory = TrackModelFactory(repository)
+//    trackViewModel = ViewModelProvider(this, factory)[TrackViewModel::class.java]
 
+//     Add data if database is empty
+//    trackViewModel.tracks.observe(this) { trackList ->
+//        if (trackList.isEmpty()) {
+//            trackViewModel.sampleTracks.forEach { sampleTrack ->
+//                trackViewModel.addTrack(sampleTrack)
+//            }
+//        } else {
+//            trackList.forEach { track ->
+//                Log.d(
+//                    "MainActivity",
+//                    "Track: id=${track.id}, name=${track.name}, artist=${track.artist}, path=${track.path}"
+//                )
+//            }
+//        }
+//    }
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        audioFiles?.forEach { fileName ->
-            val fileDisplayName = fileName.removeSuffix(".mp3")
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+
+        val tracks by trackViewModel.tracks.observeAsState(emptyList())
+        tracks.forEach { track ->
+            val trackTitle = track.name
+            val trackArtist = track.artist
 
             TextButton(
                 onClick = {
-                    musicPlayerViewModel.playFile(fileDisplayName)
-                    navController.navigate("CurrentSong/$fileDisplayName")
+                    musicPlayerViewModel.playFile(track.path)
+                    navController.navigate("CurrentSong/${track.id}")
                 },
-                modifier = Modifier.fillMaxWidth().padding(4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = fileDisplayName)
-                    if (currentFile == fileDisplayName) {
-                        Text(text = " (Playing)", color = Color.Red)
-                    }
+                    Text(text = "$trackArtist - $trackTitle")
                 }
             }
         }
+
 
         if (currentFile != null) {
             Spacer(modifier = Modifier.weight(1f)) // wypycha slider na dół
@@ -55,4 +84,6 @@ fun FilesDisplay(
         }
     }
 }
+
+
 

@@ -1,5 +1,6 @@
 package com.example.musicplayer.ui.theme
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +17,6 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -29,6 +29,7 @@ fun CurrentSong(
     songName: String,
     artist: String,
     musicPlayerViewModel: MusicPlayerViewModel,
+    trackViewModel: TrackViewModel,
     navController: NavController,
 
 ) {
@@ -42,22 +43,20 @@ fun CurrentSong(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-
-            Row { Text("Now playing: $songName") }
-            Row { Text("Artist: $artist") }
             //api display
             val viewModel: SongInfoViewModel = viewModel()
 
             LaunchedEffect(songName, artist) {
                 viewModel.fetchSongInfo(
                     apiKey = "2a1e7bb8dbb77494cb8334cd8607ab0a",
-                    songName = "billie jean",
-                    artist = "michael jackson"
+                    songName = songName,
+                    artist = artist
+
                 )
             }
             val songInfo by viewModel.songInfo
             songInfo?.let { info ->
-                Row { Text("Tytuł utworu z API: ${info.name}") }
+                Row { Text("${info.artist?.name} - ${info.name}") }
 
                 Spacer(modifier.padding(4.dp))
 
@@ -84,7 +83,6 @@ fun CurrentSong(
             Spacer(modifier = Modifier.weight(1f))
             Row { Footer(musicPlayerViewModel, navController) }
         }
-
 
     }
 

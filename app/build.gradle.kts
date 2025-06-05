@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    //id("com.google.devtools.ksp") version "1.9.23-1.0.20"
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -58,12 +58,37 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
     val nav_version = "2.9.0"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation("io.coil-kt:coil-compose:2.2.2")
 
+
+    //ROOM - to be cleaned
+    implementation(libs.androidx.room.runtime.android)
+    ksp(libs.androidx.room.compiler)
+//    implementation("androidx.core:core-ktx:1.16.0")
+//    implementation("androidx.appcompat:appcompat:1.6.0")
+
+//    implementation("androidx.appcompat:appcompat:1.6.0")
+//    implementation("com.google.android.material:material:1.13.0")
+//    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+
+//    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha02")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0-alpha03")
+
+//    implementation("androidx.room:room-runtime:2.7.1")
+//    implementation("com.google.dagger:dagger-compiler:2.51.1")
+//    ksp("com.google.dagger:dagger-compiler:2.51.1")
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:1.16.0")
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+//    implementation("androidx.activity:activity-ktx:1.8.0")
+//    implementation("androidx.fragment:fragment-ktx:1.7.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
+    //implementation(kotlin("stdlib-jdk8"))
 }

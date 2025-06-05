@@ -7,7 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.Call
-import retrofit2.create
 import retrofit2.http.Query
 
 /** The RetrofitClient object is a singleton class that creates a

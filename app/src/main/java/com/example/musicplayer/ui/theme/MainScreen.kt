@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,8 +31,11 @@ fun MainScreen(
     modifier: Modifier = Modifier
         .fillMaxSize(), // <- Zajmuje cały ekran
     navController: NavController,
-    viewModel: MusicPlayerViewModel
+    viewModel: MusicPlayerViewModel,
+    trackViewModel: TrackViewModel
+
 ) {
+
     Surface{
         Column(
             modifier = modifier.padding(8.dp) // główny kontener
@@ -62,7 +64,8 @@ fun MainScreen(
                 FilesDisplay(
                     modifier = Modifier.weight(1f),
                     navController = navController,
-                    musicPlayerViewModel = viewModel
+                    musicPlayerViewModel = viewModel,
+                    trackViewModel = trackViewModel
                 )
             }
         }

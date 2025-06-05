@@ -5,7 +5,9 @@ import android.content.res.AssetFileDescriptor
 import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+
 import androidx.lifecycle.viewModelScope
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,7 +50,7 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
             mediaPlayer?.stop()
             mediaPlayer?.release()
 
-            val afd: AssetFileDescriptor = assetManager.openFd("audio_files/$fileName.mp3")
+            val afd: AssetFileDescriptor = assetManager.openFd(fileName)
             val player = MediaPlayer()
             player.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             player.prepare()

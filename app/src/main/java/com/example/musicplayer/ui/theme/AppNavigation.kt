@@ -1,31 +1,37 @@
 package com.example.musicplayer.ui.theme
 
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
-
+import androidx.compose.runtime.getValue
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(trackViewModel: TrackViewModel) {
     val navController = rememberNavController()
     val musicPlayerViewModel: MusicPlayerViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "MainScreen") {
         composable("MainScreen") {
-            MainScreen(modifier = Modifier, navController, musicPlayerViewModel)
+            MainScreen(modifier = Modifier, navController, musicPlayerViewModel, trackViewModel)
         }
-        composable("CurrentSong/{songName}") { backStackEntry ->
-            val songName = backStackEntry.arguments?.getString("songName") ?: "Unknown"
+        composable("CurrentSong/{trackId}") { backStackEntry ->
+            val trackId = backStackEntry.arguments?.getString("trackId") ?: ""
+
+            val tracks by trackViewModel.tracks.observeAsState(emptyList())
+            val track = tracks.find { it.id.toString() == trackId }
             CurrentSong(
                 modifier = Modifier,
-                songName = songName,
-                artist = "artist",
+                songName = track?.name?: "Wrong song name",
+                artist = track?.artist?: "Wrong artist",
                 musicPlayerViewModel = musicPlayerViewModel,
+                trackViewModel = trackViewModel,
                 navController = navController
             )
         }
