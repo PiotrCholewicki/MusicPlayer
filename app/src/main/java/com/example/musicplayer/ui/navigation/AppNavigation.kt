@@ -33,7 +33,6 @@ fun AppNavigation(trackViewModel: TrackViewModel) {
                 songName = track?.name ?: "Wrong song name",
                 artist = track?.artist ?: "Wrong artist",
                 musicPlayerViewModel = musicPlayerViewModel,
-                trackViewModel = trackViewModel,
                 navController = navController
             )
         }
