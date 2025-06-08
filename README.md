@@ -1,0 +1,1 @@
+This is a music player that uses local database with Room. It also fetches the information about the song from last.fm API. This application is used in another, IoT project as a media controller for RaspberryPi
