@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
         val trackViewModel: TrackViewModel by viewModels {
             TrackModelFactory(repository)
         }
+
         super.onCreate(savedInstanceState)
         setContent {
             MusicPlayerTheme {

@@ -1,6 +1,5 @@
 package com.example.musicplayer.ui.screen
 
-import FilesDisplay
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,28 +8,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.musicplayer.R
-import com.example.musicplayer.viewmodel.TrackViewModel
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
+import com.example.musicplayer.viewmodel.TrackViewModel
 
 @Composable
 fun MainScreen(
@@ -46,7 +45,7 @@ fun MainScreen(
         Column(
             modifier = modifier.padding(8.dp) // główny kontener
         ) {
-            // GÓRNY pasek - Raspberry (40.dp)
+            // TOP BAR
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,7 +57,7 @@ fun MainScreen(
                 Text("to_do: RASPBERRY")
             }
 
-            // ŚRODKOWA lista utworów - reszta miejsca
+            // MIDDLE BAR
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,16 +112,13 @@ fun Footer(musicPlayerViewModel: MusicPlayerViewModel, navController: NavControl
             }
             Button(onClick = {
                 musicPlayerViewModel.stopPlayback()
-                navController.popBackStack()
+                navController.navigate("MainScreen")
             }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.stop_button),
                     contentDescription = "Stop"
                 )
-
             }
-
-
         }
 
         Slider(
@@ -133,5 +129,52 @@ fun Footer(musicPlayerViewModel: MusicPlayerViewModel, navController: NavControl
             },
             modifier = Modifier.fillMaxWidth()
         )
+    }
+}
+@Composable
+fun FilesDisplay(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    musicPlayerViewModel: MusicPlayerViewModel,
+    trackViewModel: TrackViewModel
+) {
+
+    val currentFile by musicPlayerViewModel.currentFile.collectAsState()
+
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+
+        val tracks by trackViewModel.tracks.observeAsState(emptyList())
+        tracks.forEach { track ->
+            val trackTitle = track.name
+            val trackArtist = track.artist
+
+            TextButton(
+                onClick = {
+                    musicPlayerViewModel.playFile(track.path)
+                    navController.navigate("CurrentSong/${track.id}")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "$trackArtist - $trackTitle")
+                }
+            }
+        }
+
+
+        if (currentFile != null) {
+            Spacer(modifier = Modifier.weight(1f)) // wypycha slider na dół
+            Footer(musicPlayerViewModel, navController)
+        }
     }
 }

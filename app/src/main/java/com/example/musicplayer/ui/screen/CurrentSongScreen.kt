@@ -78,8 +78,6 @@ fun CurrentSong(
                     info.toptags?.tag?.forEach { tag -> Row{Text(text = "${tag.name} ")} } //displaying genres
 
                 }
-
-
             }
             Spacer(modifier = Modifier.weight(1f))
             Row { Footer(musicPlayerViewModel, navController) }

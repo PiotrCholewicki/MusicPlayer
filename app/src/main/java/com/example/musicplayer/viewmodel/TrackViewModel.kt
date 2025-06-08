@@ -11,10 +11,7 @@ import kotlinx.coroutines.launch
 
 class TrackViewModel(private val repository: TrackRepository) : ViewModel() {
     var tracks: LiveData<List<Track>>  = repository.allTracks.asLiveData()
-    val sampleTracks= listOf(
-        Track(0, "Nirvana", "Lithium", "audio_files/lithium.mp3"),
-        Track(0, "The Beatles", "Hey Jude", "audio_files/hey_jude.mp3")
-    )
+
     fun addTrack(newTrack: Track) = viewModelScope.launch {
         repository.insertTrack(newTrack)
     }
