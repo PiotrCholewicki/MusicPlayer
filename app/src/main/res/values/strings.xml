@@ -3,4 +3,5 @@
     <string name="list_of_audio_tracks">"List of audio tracks: "</string>
     <string name="error">Error! Incorrect connection with API</string>
     <string name="network_error">No connection with network :(</string>
+    <string name="api_key">2a1e7bb8dbb77494cb8334cd8607ab0a</string>
 </resources>
