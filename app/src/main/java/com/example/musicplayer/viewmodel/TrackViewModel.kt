@@ -1,10 +1,12 @@
-package com.example.musicplayer.ui.theme
+package com.example.musicplayer.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.musicplayer.data.database.Track
+import com.example.musicplayer.data.repository.TrackRepository
 import kotlinx.coroutines.launch
 
 class TrackViewModel(private val repository: TrackRepository) : ViewModel() {

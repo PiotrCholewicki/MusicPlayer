@@ -4,12 +4,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.musicplayer.ui.theme.Footer
-import com.example.musicplayer.ui.theme.TrackViewModel
+import com.example.musicplayer.ui.screen.Footer
+import com.example.musicplayer.viewmodel.TrackViewModel
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
 import androidx.compose.runtime.livedata.observeAsState
 @Composable

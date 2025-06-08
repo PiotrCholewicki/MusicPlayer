@@ -5,9 +5,7 @@ import android.content.res.AssetFileDescriptor
 import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-
 import androidx.lifecycle.viewModelScope
-
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +33,7 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
     init {
         viewModelScope.launch {
             while (true) {
-                delay(100L)
+                delay(1000L)
                 mediaPlayer?.let {
                     if (_isPlaying.value) {
                         _currentPosition.value = it.currentPosition

@@ -1,9 +1,10 @@
-package com.example.musicplayer.ui.theme
+package com.example.musicplayer.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.musicplayer.data.dao.TrackDao
 
 @Database(entities = [Track::class], version = 1, exportSchema = false)
 abstract class TrackDatabase : RoomDatabase(){

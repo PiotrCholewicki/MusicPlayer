@@ -1,6 +1,5 @@
-package com.example.musicplayer.ui.theme
+package com.example.musicplayer.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.musicplayer.viewmodel.SongInfoViewModel
+import com.example.musicplayer.viewmodel.TrackViewModel
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
 
 
@@ -32,7 +33,7 @@ fun CurrentSong(
     trackViewModel: TrackViewModel,
     navController: NavController,
 
-) {
+    ) {
 
     Surface(modifier = modifier.fillMaxSize()) {
         Column(

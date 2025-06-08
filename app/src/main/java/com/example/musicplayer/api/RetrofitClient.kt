@@ -1,4 +1,4 @@
-package com.example.musicplayer.ui.theme
+package com.example.musicplayer.api
 
 import com.example.musicplayer.model.SongInfoResponse
 import com.squareup.moshi.Moshi

@@ -1,7 +1,6 @@
-package com.example.musicplayer.ui.theme
+package com.example.musicplayer.ui.navigation
 
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -11,6 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
 import androidx.compose.runtime.getValue
+import com.example.musicplayer.ui.screen.CurrentSong
+import com.example.musicplayer.ui.screen.MainScreen
+import com.example.musicplayer.viewmodel.TrackViewModel
 
 @Composable
 fun AppNavigation(trackViewModel: TrackViewModel) {
@@ -28,8 +30,8 @@ fun AppNavigation(trackViewModel: TrackViewModel) {
             val track = tracks.find { it.id.toString() == trackId }
             CurrentSong(
                 modifier = Modifier,
-                songName = track?.name?: "Wrong song name",
-                artist = track?.artist?: "Wrong artist",
+                songName = track?.name ?: "Wrong song name",
+                artist = track?.artist ?: "Wrong artist",
                 musicPlayerViewModel = musicPlayerViewModel,
                 trackViewModel = trackViewModel,
                 navController = navController

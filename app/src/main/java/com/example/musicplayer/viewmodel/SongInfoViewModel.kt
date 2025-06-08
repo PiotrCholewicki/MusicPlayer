@@ -1,16 +1,15 @@
-package com.example.musicplayer.ui.theme
-
+package com.example.musicplayer.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.musicplayer.model.Track
+import com.example.musicplayer.api.RetrofitClient
 import com.example.musicplayer.model.SongInfoResponse
+import com.example.musicplayer.model.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class SongInfoViewModel : ViewModel() {
     private val _songInfo = mutableStateOf<Track?>(null)

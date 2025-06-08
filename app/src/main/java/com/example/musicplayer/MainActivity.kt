@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.example.musicplayer.ui.theme.AppNavigation
+import com.example.musicplayer.ui.navigation.AppNavigation
 import com.example.musicplayer.ui.theme.MusicPlayerTheme
-import com.example.musicplayer.ui.theme.TrackModelFactory
-import com.example.musicplayer.ui.theme.TrackViewModel
+import com.example.musicplayer.viewmodel.TrackModelFactory
+import com.example.musicplayer.viewmodel.TrackViewModel
 
 
 class MainActivity : ComponentActivity() {
