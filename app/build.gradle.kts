@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.benchmark.macro)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -91,4 +92,16 @@ dependencies {
 //    implementation("androidx.fragment:fragment-ktx:1.7.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
     //implementation(kotlin("stdlib-jdk8"))
+
+    //KTOR for REST communication
+    implementation("io.ktor:ktor-client-core:3.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    implementation("io.ktor:ktor-client-core:3.1.0")
+    implementation("io.ktor:ktor-client-okhttp:3.1.0")
+    implementation("io.ktor:ktor-client-content-negotiation:3.1.0")
+    implementation("io.ktor:ktor-client-logging:3.1.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.0")
+
+// JSON serialization library
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 }

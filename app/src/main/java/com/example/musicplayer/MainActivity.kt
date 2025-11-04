@@ -13,6 +13,7 @@ import com.example.musicplayer.viewmodel.TrackViewModel
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         val repository = (application as MusicPlayerApplication).repository
         val trackViewModel: TrackViewModel by viewModels {
             TrackModelFactory(repository)

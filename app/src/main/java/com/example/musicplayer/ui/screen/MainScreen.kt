@@ -1,7 +1,9 @@
 package com.example.musicplayer.ui.screen
 
+import android.content.Context
+import android.content.res.AssetFileDescriptor
+import android.os.Environment
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +41,19 @@ import androidx.navigation.NavController
 import com.example.musicplayer.R
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
 import com.example.musicplayer.viewmodel.TrackViewModel
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+
 
 @Composable
 fun MainScreen(
@@ -49,7 +65,9 @@ fun MainScreen(
 
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
-            modifier = modifier.padding(16.dp).fillMaxSize(), // Increased overall padding
+            modifier = modifier
+                .padding(16.dp)
+                .fillMaxSize(), // Increased overall padding
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Header
@@ -103,7 +121,9 @@ fun Footer(musicPlayerViewModel: MusicPlayerViewModel, navController: NavControl
                 val newPos = (it * totalDuration).toInt()
                 musicPlayerViewModel.seekTo(newPos)
             },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             colors = androidx.compose.material3.SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = MaterialTheme.colorScheme.primary,
@@ -159,11 +179,12 @@ fun FilesDisplay(
 ) {
     val currentFile by musicPlayerViewModel.currentFile.collectAsState()
     val tracks by trackViewModel.tracks.observeAsState(emptyList())
-
+    val context = LocalContext.current
     Column(modifier = modifier) {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-                                .height(700.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(700.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp) // Spacing between track items
         ) {
             items(tracks) { track ->
@@ -177,6 +198,14 @@ fun FilesDisplay(
                         .clickable {
                             if (currentFile != currentTrackPath) { // don't restart the player when clicked the same song
                                 musicPlayerViewModel.playFile(track.path)
+                                //we need to access the file that is clicked
+
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    //while clicking call function to rPi
+                                    Log.e("UPLOAD_PATH", "Próba wysłania pliku z: $currentTrackPath")
+                                    sendAssetToServer(context, currentTrackPath)
+                                }
+
                                 Log.e("MainScreen", "$currentFile, $currentTrackPath")
                             }
                             navController.navigate("CurrentSong/${track.id}")
@@ -218,3 +247,35 @@ fun FilesDisplay(
         }
     }
 }
+//funkcja przesyłająca plik na serwer
+suspend fun sendAssetToServer(context: Context, assetPath: String) {
+    val client = HttpClient(OkHttp) {
+        install(ContentNegotiation) { json() }
+    }
+
+    try {
+        val inputStream = context.assets.open(assetPath)
+        val bytes = inputStream.readBytes()
+        inputStream.close()
+        //wazne! wysyla dane jako multipart/form-data
+        val response = client.submitFormWithBinaryData(
+            url = "http://172.21.107.237:8000/upload",
+            formData = formData {
+                //bitowe przesyłanie pliku
+                append("file", bytes, Headers.build {
+                    //deklaracja: to jest mp3
+                    append(HttpHeaders.ContentType, "audio/mpeg")
+                    append(HttpHeaders.ContentDisposition, "filename=$assetPath")
+                })
+            }
+        )
+
+        Log.d("UPLOAD", "Response: ${response.status}")
+    } catch (e: Exception) {
+        Log.e("UPLOAD", "Error: ${e.message}")
+    } finally {
+        client.close()
+    }
+}
+
+
