@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.os.Environment
 import android.util.Log
+import android.util.Log.e
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,14 +46,21 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.content.TextContent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import java.io.File
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 
 
 @Composable
@@ -137,7 +145,8 @@ fun Footer(musicPlayerViewModel: MusicPlayerViewModel, navController: NavControl
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { musicPlayerViewModel.togglePlayPause() },
+
+                onClick = {CoroutineScope(Dispatchers.IO).launch { musicPlayerViewModel.togglePlayPause()} },
                 modifier = Modifier.padding(horizontal = 4.dp)
             ) {
                 Icon(
@@ -247,6 +256,7 @@ fun FilesDisplay(
         }
     }
 }
+
 //funkcja przesyłająca plik na serwer
 suspend fun sendAssetToServer(context: Context, assetPath: String) {
     val client = HttpClient(OkHttp) {
@@ -259,7 +269,7 @@ suspend fun sendAssetToServer(context: Context, assetPath: String) {
         inputStream.close()
         //wazne! wysyla dane jako multipart/form-data
         val response = client.submitFormWithBinaryData(
-            url = "http://172.21.107.237:8000/upload",
+            url = "http://10.83.205.237:8000/upload",
             formData = formData {
                 //bitowe przesyłanie pliku
                 append("file", bytes, Headers.build {
