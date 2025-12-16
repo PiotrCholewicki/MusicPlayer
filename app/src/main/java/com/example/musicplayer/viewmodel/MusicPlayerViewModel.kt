@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.musicplayer.network.getCommandUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -18,12 +19,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-const val SERVER_CONTENT_URL = "http://10.83.205.237:8000/command"
 class MusicPlayerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val context = application.applicationContext
     private val assetManager = context.assets
 
+    private val serverContentUrl: String
+        get() = getCommandUrl(context)
     private var mediaPlayer: MediaPlayer? = null
 
     private val _currentFile = MutableStateFlow<String?>(null)
@@ -115,7 +117,7 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
             install(ContentNegotiation) { json() }
         }
         try{
-            val response = client.post(SERVER_CONTENT_URL){
+            val response = client.post(serverContentUrl){
                 setBody(TextContent("p", ContentType.Text.Plain))}
             Log.d("COMMAND", "Sukces, wysyłam prośbę o zatrzymanie")
         }
@@ -133,7 +135,7 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
             install(ContentNegotiation) { json() }
         }
         try{
-            val response = client.post(SERVER_CONTENT_URL){
+            val response = client.post(serverContentUrl){
                 setBody(TextContent("r", ContentType.Text.Plain))}
             Log.d("COMMAND", "Sukces, wysyłam prośbę o wznowienie")
         }

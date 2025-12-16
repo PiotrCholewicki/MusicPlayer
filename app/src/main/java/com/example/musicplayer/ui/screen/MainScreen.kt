@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.musicplayer.R
+import com.example.musicplayer.network.getSavedPiIp
+import com.example.musicplayer.network.getUploadUrl
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
 import com.example.musicplayer.viewmodel.TrackViewModel
 import io.ktor.client.HttpClient
@@ -61,7 +63,8 @@ import org.w3c.dom.Text
 import java.io.File
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
-
+import org.json.JSONObject
+import java.net.URL
 
 @Composable
 fun MainScreen(
@@ -269,7 +272,8 @@ suspend fun sendAssetToServer(context: Context, assetPath: String) {
         inputStream.close()
         //wazne! wysyla dane jako multipart/form-data
         val response = client.submitFormWithBinaryData(
-            url = "http://10.83.205.237:8000/upload",
+            //url = "http://10.83.205.237:8000/upload",
+            url = getUploadUrl(context),
             formData = formData {
                 //bitowe przesyłanie pliku
                 append("file", bytes, Headers.build {
@@ -287,5 +291,6 @@ suspend fun sendAssetToServer(context: Context, assetPath: String) {
         client.close()
     }
 }
+
 
 
