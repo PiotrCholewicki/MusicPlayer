@@ -74,6 +74,9 @@ fun MainScreen(
     viewModel: MusicPlayerViewModel,
     trackViewModel: TrackViewModel
 ) {
+    val context = LocalContext.current
+    Log.d("IP_RPI", "Próba uzyskania adresu RPI")
+    fetchAndSavePiIp(context = context)
 
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -108,6 +111,7 @@ fun MainScreen(
                 trackViewModel = trackViewModel
             )
 
+            Log.d("IP_RPI", "Odczytane IP raspberryPi: " + getSavedPiIp(context = context) )
             // Footer (Music Player Controls)
             // The footer will be placed here automatically after FilesDisplay due to weight
         }
@@ -194,7 +198,7 @@ fun FilesDisplay(
     val tracks by trackViewModel.tracks.observeAsState(emptyList())
 
     val context = LocalContext.current
-    fetchAndSavePiIp(context = context)
+
     Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier

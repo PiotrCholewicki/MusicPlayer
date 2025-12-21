@@ -12,18 +12,19 @@ import java.net.URL
 fun fetchAndSavePiIp(context: Context) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            val url = URL("http://192.168.4.1:8000/status")
+            val url = URL("http://192.168.4.1.237:8002/status")
             val connection = url.openConnection()
-            val data = connection.getInputStream().bufferedReader().readText()
 
+            val data = connection.getInputStream().bufferedReader().readText()
             val json = JSONObject(data)
             val ip = json.getString("ip")
+            Log.d("IP_RPI","Zapisano IP Raspberry Pi: $ip")
 
             // zapis w SharedPreferences
             val prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             prefs.edit().putString("raspberry_ip", ip).apply()
+            Log.d("IP_RPI", "Zapisano ip do shared preferences")
 
-            Log.e("IP_RPI","Zapisano IP Raspberry Pi: $ip")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -38,9 +39,10 @@ fun getSavedPiIp(context: Context): String {
 
 fun getUploadUrl(context: Context): String{
     val ip = getSavedPiIp(context)
-    return "http://"+ip+":8080/upload"
+
+    return "http://"+ip+":8000/upload"
 }
 fun getCommandUrl(context: Context): String{
     val ip = getSavedPiIp(context)
-    return "http://"+ip+":8080/command"
+    return "http://"+ip+":8000/command"
 }
