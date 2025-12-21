@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.musicplayer.R
+import com.example.musicplayer.network.fetchAndSavePiIp
 import com.example.musicplayer.network.getSavedPiIp
 import com.example.musicplayer.network.getUploadUrl
 import com.example.musicplayer.viewmodel.MusicPlayerViewModel
@@ -191,7 +192,9 @@ fun FilesDisplay(
 ) {
     val currentFile by musicPlayerViewModel.currentFile.collectAsState()
     val tracks by trackViewModel.tracks.observeAsState(emptyList())
+
     val context = LocalContext.current
+    fetchAndSavePiIp(context = context)
     Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
