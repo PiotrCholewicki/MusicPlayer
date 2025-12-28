@@ -12,7 +12,7 @@ import java.net.URL
 fun fetchAndSavePiIp(context: Context) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            val url = URL("http://192.168.4.1.237:8002/status")
+            val url = URL("http://192.168.4.1:8000/status")
             val connection = url.openConnection()
 
             val data = connection.getInputStream().bufferedReader().readText()
